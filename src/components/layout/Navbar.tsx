@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { Menu, X, ChevronDown, LogOut, User, Shield } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { MobileSiteSearch, SiteSearch } from './SiteSearch';
 
 const understandingLinks = [
   { href: '/at-large-elections',   label: 'At-Large Elections' },
@@ -24,12 +25,27 @@ const remediesLinks = [
   { href: '/abolish-senate',              label: 'Abolish the Senate' },
   { href: '/direct-democracy',            label: 'Direct Democracy' },
   { href: '/democratize-supreme-court',   label: 'Democratize the Supreme Court' },
-  { href: '/best-democracy-index',        label: 'Best Democracy Index' },
 ];
 
 const resourceLinks = [
   { href: '/court-cases', label: 'Court Cases' },
-  { href: '/about',       label: 'About Jesse Kumin' },
+  { href: '/best-democracy-index', label: 'Best Democracy Index' },
+];
+
+const aboutLinks = [
+  { href: '/about',   label: 'About Jesse Kumin' },
+  { href: '/bylaws',  label: 'Bylaws' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const communityLinks = [
+  { href: '/events', label: 'Events' },
+  { href: '/blog',   label: 'Forum' },
+];
+
+const democracyLinks = [
+  ...understandingLinks,
+  ...prRepLinks,
 ];
 
 export function Navbar() {
@@ -43,28 +59,29 @@ export function Navbar() {
   return (
     <header className="bg-bd-navy text-bd-cream sticky top-0 z-50 shadow-lg" role="banner">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between min-h-16 py-2 gap-4">
           {/* Logo */}
           <Link
             href="/"
-            className="font-display text-xl font-bold text-bd-gold tracking-widest hover:text-yellow-400 transition-colors"
+            className="font-display text-xl font-bold text-bd-gold tracking-widest hover:text-yellow-400 transition-colors whitespace-nowrap"
             aria-label="Best Democracy home"
           >
-            BEST DEMOCRACY
+            <span className="2xl:hidden" aria-hidden>BD</span>
+            <span className="hidden 2xl:inline">BEST DEMOCRACY</span>
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
-            <NavDropdown label="Understanding" id="understanding" items={understandingLinks} open={dropdown === 'understanding'} onToggle={() => toggle('understanding')} />
-            <NavDropdown label="Pro Rep"        id="prorep"       items={prRepLinks}         open={dropdown === 'prorep'}       onToggle={() => toggle('prorep')} />
+          <nav className="hidden xl:flex items-center gap-2" aria-label="Main navigation">
+            <NavDropdown label="Democracy"      id="democracy"    items={democracyLinks}     open={dropdown === 'democracy'}    onToggle={() => toggle('democracy')} />
             <NavDropdown label="Remedies"       id="remedies"     items={remediesLinks}      open={dropdown === 'remedies'}     onToggle={() => toggle('remedies')} />
             <NavDropdown label="Resources"      id="resources"    items={resourceLinks}      open={dropdown === 'resources'}    onToggle={() => toggle('resources')} />
-            <NavLink href="/events" label="Events" />
-            <NavLink href="/blog"   label="Forum" />
+            <NavDropdown label="About"          id="about"        items={aboutLinks}         open={dropdown === 'about'}        onToggle={() => toggle('about')} />
+            <NavDropdown label="Community"      id="community"    items={communityLinks}     open={dropdown === 'community'}    onToggle={() => toggle('community')} />
+            <SiteSearch />
           </nav>
 
           {/* Auth / user */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden 2xl:flex items-center gap-3">
             {session ? (
               <div className="relative">
                 <button
@@ -107,7 +124,7 @@ export function Navbar() {
 
           {/* Mobile toggle */}
           <button
-            className="lg:hidden text-bd-cream hover:text-bd-gold"
+            className="xl:hidden text-bd-cream hover:text-bd-gold"
             onClick={() => setMobileOpen(o => !o)}
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
@@ -120,11 +137,9 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div id="mobile-menu" className="lg:hidden bg-bd-navy border-t border-white/10 py-4 px-6 space-y-2" role="navigation" aria-label="Mobile navigation">
-          {[...understandingLinks, ...prRepLinks, ...remediesLinks, ...resourceLinks,
-            { href: '/events', label: 'Events' },
-            { href: '/blog',   label: 'Forum' },
-          ].map(l => (
+        <div id="mobile-menu" className="xl:hidden bg-bd-navy border-t border-white/10 py-4 px-6 space-y-2" role="navigation" aria-label="Mobile navigation">
+          <MobileSiteSearch onNavigate={() => setMobileOpen(false)} />
+          {[...understandingLinks, ...prRepLinks, ...remediesLinks, ...resourceLinks, ...aboutLinks, ...communityLinks].map(l => (
             <Link
               key={l.href}
               href={l.href}

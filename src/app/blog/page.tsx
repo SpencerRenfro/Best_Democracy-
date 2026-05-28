@@ -1,7 +1,7 @@
 // src/app/blog/page.tsx
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { prisma } from '@/lib/prisma';
+import { isDatabaseConfigured, prisma } from '@/lib/prisma';
 import { auth } from '@/lib/auth';
 import { formatDate, truncate } from '@/lib/utils';
 import { PageHero } from '@/components/sections/PageHero';
@@ -15,6 +15,8 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 async function getPosts() {
+  if (!isDatabaseConfigured()) return [];
+
   try {
     return await prisma.post.findMany({
       where: { published: true },

@@ -2,7 +2,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { prisma } from '@/lib/prisma';
+import { isDatabaseConfigured, prisma } from '@/lib/prisma';
 import { auth } from '@/lib/auth';
 import { formatDate } from '@/lib/utils';
 import { CommentSection } from './CommentSection';
@@ -11,6 +11,8 @@ import { ArrowLeft, Clock, User, MessageSquare } from 'lucide-react';
 interface Props { params: { slug: string } }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  if (!isDatabaseConfigured()) return { title: 'Post' };
+
   try {
     const post = await prisma.post.findUnique({ where: { slug: params.slug, published: true } });
     if (!post) return { title: 'Post not found' };
@@ -27,17 +29,21 @@ export default async function PostPage({ params }: Props) {
 
   let post: any;
   try {
-    post = await prisma.post.findUnique({
-      where: { slug: params.slug, published: true },
-      include: {
-        author:   { select: { name: true, location: true } },
-        comments: {
-          where: { approved: true },
-          orderBy: { createdAt: 'asc' },
-          include: { author: { select: { name: true } } },
+    if (!isDatabaseConfigured()) {
+      post = null;
+    } else {
+      post = await prisma.post.findUnique({
+        where: { slug: params.slug, published: true },
+        include: {
+          author:   { select: { name: true, location: true } },
+          comments: {
+            where: { approved: true },
+            orderBy: { createdAt: 'asc' },
+            include: { author: { select: { name: true } } },
+          },
         },
-      },
-    });
+      });
+    }
   } catch {
     post = null;
   }

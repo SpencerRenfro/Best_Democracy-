@@ -1,7 +1,7 @@
 // src/app/events/page.tsx
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { prisma } from '@/lib/prisma';
+import { isDatabaseConfigured, prisma } from '@/lib/prisma';
 import { auth } from '@/lib/auth';
 import { formatDate } from '@/lib/utils';
 import { PageHero } from '@/components/sections/PageHero';
@@ -15,6 +15,8 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 async function getEvents() {
+  if (!isDatabaseConfigured()) return [];
+
   try {
     return await prisma.event.findMany({
       where: { published: true, startDate: { gte: new Date() } },

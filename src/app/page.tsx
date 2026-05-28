@@ -1,7 +1,6 @@
 // src/app/page.tsx
 import Link from 'next/link';
 import { ArrowRight, Users, Scale, Vote, Building, BookOpen, Calendar } from 'lucide-react';
-import { NewsletterForm } from '@/components/sections/NewsletterForm';
 
 const issues = [
   {
@@ -202,11 +201,6 @@ export default function HomePage() {
       </section>
 
       {/* ── Newsletter ────────────────────────────────────────────────────── */}
-      <section className="py-16 px-6 bg-bd-navy">
-        <div className="max-w-7xl mx-auto">
-          <NewsletterForm />
-        </div>
-      </section>
     </>
   );
 }
