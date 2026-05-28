@@ -1,0 +1,144 @@
+/* src/app/globals.css */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-playfair: 'Playfair Display', Georgia, serif;
+  --font-source-serif: 'Source Serif 4', Georgia, serif;
+  --font-ibm-plex-mono: 'IBM Plex Mono', monospace;
+
+  --bd-navy:  #0D1B2A;
+  --bd-cobalt:#1B4FE8;
+  --bd-gold:  #C8972A;
+  --bd-cream: #F5F0E8;
+  --bd-slate: #4A5568;
+  --bd-muted: #8A9BB0;
+  --bd-red:   #C0392B;
+  --bd-green: #1A6B3C;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bd-cream text-bd-navy;
+    font-family: var(--font-source-serif);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-playfair);
+    @apply font-bold;
+  }
+
+  /* Skip-to-content link (accessibility) */
+  .skip-link {
+    @apply absolute -top-full left-4 z-50 bg-bd-cobalt text-white px-4 py-2 rounded-b-md;
+    transition: top 0.2s;
+  }
+  .skip-link:focus {
+    @apply top-0;
+  }
+
+  /* Focus ring — WCAG 2.1 AA compliant */
+  :focus-visible {
+    outline: 3px solid var(--bd-cobalt);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-bd-cobalt text-white font-medium px-6 py-3 rounded-sm
+           hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-bd-cobalt focus-visible:ring-offset-2
+           transition-colors duration-200 cursor-pointer;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 border-2 border-bd-cobalt text-bd-cobalt font-medium px-6 py-3 rounded-sm
+           hover:bg-bd-cobalt hover:text-white transition-colors duration-200 cursor-pointer;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center gap-2 bg-bd-gold text-white font-medium px-6 py-3 rounded-sm
+           hover:bg-yellow-700 transition-colors duration-200 cursor-pointer;
+  }
+
+  .card {
+    @apply bg-white border border-gray-200 rounded-sm shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+
+  .section-title {
+    @apply font-display text-3xl md:text-4xl font-bold text-bd-navy;
+  }
+
+  .section-subtitle {
+    @apply text-bd-slate text-lg mt-3 font-body;
+  }
+
+  .prose-bd {
+    @apply prose prose-lg max-w-none
+           prose-headings:font-display prose-headings:text-bd-navy
+           prose-p:font-body prose-p:text-bd-slate prose-p:leading-relaxed
+           prose-a:text-bd-cobalt prose-a:no-underline hover:prose-a:underline
+           prose-blockquote:border-l-bd-gold prose-blockquote:bg-bd-cream prose-blockquote:py-1 prose-blockquote:px-4;
+  }
+
+  /* Gold accent bar used on hero sections */
+  .gold-bar {
+    @apply w-16 h-1 bg-bd-gold my-6;
+  }
+
+  /* Nav link */
+  .nav-link {
+    @apply text-bd-cream hover:text-bd-gold transition-colors duration-200 text-sm font-medium tracking-wide uppercase;
+  }
+
+  .nav-link-active {
+    @apply text-bd-gold;
+  }
+
+  /* Form input */
+  .input {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-sm bg-white text-bd-navy
+           focus:outline-none focus:ring-2 focus:ring-bd-cobalt focus:border-transparent
+           placeholder-gray-400 font-body;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-bd-navy mb-1 font-body;
+  }
+
+  .error-msg {
+    @apply text-bd-red text-sm mt-1;
+  }
+
+  /* Tag pill */
+  .tag {
+    @apply inline-block bg-bd-navy text-bd-cream text-xs px-3 py-1 rounded-full font-mono tracking-wide;
+  }
+
+  /* Quote callout */
+  .pullquote {
+    @apply border-l-4 border-bd-gold pl-6 my-8 italic text-xl text-bd-slate font-body;
+  }
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.6s ease-out forwards;
+}
+
+.animate-fade-up-delay-1 { animation-delay: 0.1s; opacity: 0; }
+.animate-fade-up-delay-2 { animation-delay: 0.2s; opacity: 0; }
+.animate-fade-up-delay-3 { animation-delay: 0.3s; opacity: 0; }
